@@ -12,7 +12,7 @@ val disabled = listOf(
 )
 
 File(rootDir, ".").eachDir { dir ->
-    if (!disabled.contains(dir.name) && dir.isDirectory && File(dir, "build.gradle.kts").exists()) {
+    if (!disabled.contains(dir.name) && File(dir, "build.gradle.kts").exists()) {
         include(dir.name)
     }
 }
