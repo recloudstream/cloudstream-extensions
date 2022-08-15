@@ -1,94 +1,22 @@
 rootProject.name = "CloudstreamPlugins"
 
-// This file sets what projects are included. Every time you add a new project, you must add it
+// This file sets what projects are included. Every time you add a new project you must add it
 // to the includes below.
 
 // Plugins are included like this
-include(
-    "XcineProvider",
-    "FilmanProvider",
-    "VMoveeProvider",
-    "AsiaFlixProvider",
-    "DoramasYTProvider",
-//    "SflixProProvider",
-    "PinoyMovies",
-    "SeriesflixProvider",
-    "TrailersTwoProvider",
-    "KisskhProvider",
-    "VidstreamBundle",
-    "RebahinProvider",
-    "AllMoviesForYouProvider",
-    "UakinoProvider",
-    "DramaidProvider",
-    "FaselHDProvider",
-    "MeloMovieProvider",
-    "PelisplusProvider",
-    "YomoviesProvider",
-    "AkwamProvider",
-    "IdlixProvider",
-    "NginxProvider",
-    "SoaptwoDayProvider",
-    "PinoyHDXyzProvider",
-    "PelisflixProvider",
-    "SflixProvider",
-    "ElifilmsProvider",
-    "VidSrcProvider",
-    "EgyBestProvider",
-    "VfSerieProvider",
-    "LayarKacaProvider",
-    "EntrepeliculasyseriesProvider",
-    "SuperStream",
-    "FrenchStreamProvider",
-    "MyCimaProvider",
-    "EstrenosDoramasProvider",
-//    "HDTodayProvider",
-    "DubokuProvider",
-    "HDMProvider",
-    "PhimmoichillProvider",
-    "OlgplyProvider",
-    "PeliSmartProvider",
-    "VfFilmProvider",
-    "IHaveNoTvProvider",
-    "CuevanaProvider",
-    "CinecalidadProvider",
-    "HDMovie5",
-    "HDrezkaProvider",
-    "PelisplusHDProvider",
-    "MultiplexProvider",
-    //"BflixProvider",
-//    "FmoviesToProvider",
-    "TheFlixToProvider",
-
-
-    // <--- Anime providers --->
-    "DubbedAnimeProvider",
-    "TocanimeProvider",
-    "NontonAnimeIDProvider",
-    "WcofunProvider",
-    "TenshiProvider",
-    "KimCartoonProvider",
-    "AllAnimeProvider",
-    "WatchCartoonOnlineProvider",
-    "AnimeFlickProvider",
-    "AnimeSailProvider",
-    "MonoschinosProvider",
-    "AnimefenixProvider",
-    "NeonimeProvider",
-    "KawaiifuProvider",
-    "OploverzProvider",
-    "MundoDonghuaProvider",
-    "NineAnimeProvider",
-    "AnimePaheProvider",
-    "AnimeflvIOProvider",
-    "AniflixProvider",
-    "GogoanimeProvider",
-    "AnimeflvnetProvider",
-    "KuramanimeProvider",
-    "GomunimeProvider",
-    "OtakudesuProvider",
-    "JKAnimeProvider",
-    "AnimekisaProvider",
-    "AnimeIndoProvider",
-    "KuronimeProvider",
-    "EjaTv",
+val disabled = listOf(
+    "SflixProProvider",
+    "HDTodayProvider",
+    "BflixProvider",
+    "FmoviesToProvider"
 )
+
+File(rootDir, ".").eachDir { dir ->
+    if (!disabled.contains(dir.name) && dir.isDirectory && File(dir, "build.gradle.kts").exists()) {
+        include(dir.name)
+    }
+}
+
+fun File.eachDir(block: (File) -> Unit) {
+    listFiles()?.filter { it.isDirectory }?.forEach { block(it) }
+}
