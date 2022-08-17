@@ -6,7 +6,6 @@ rootProject.name = "CloudstreamPlugins"
 // Plugins are included like this
 val disabled = listOf(
     "SflixProProvider",
-    "HDTodayProvider",
     "BflixProvider",
     "FmoviesToProvider"
 )
