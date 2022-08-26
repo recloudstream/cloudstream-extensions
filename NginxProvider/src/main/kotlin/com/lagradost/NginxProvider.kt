@@ -71,7 +71,7 @@ class NginxProvider : MainAPI() {
 
         val metadataDocument =  app.get(url, authHeader).document  // get the metadata nfo file
 
-        val title = metadataDocument.selectFirst("title")?.text() ?: url.substringBeforeLast("/").substringAfterLast("/")
+        val title = metadataDocument.selectFirst("title")?.text()?.replace("/", "") ?: url.substringBeforeLast("/").substringAfterLast("/")
         // gets the content between slashes: https://g.com/nameOfShow/tvshow.nfo
 
         val description = metadataDocument.selectFirst("plot")?.text()
