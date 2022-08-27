@@ -230,17 +230,17 @@ class TheFlixToProvider : MainAPI() {
     override suspend fun search(query: String): List<SearchResponse> {
 
         val parsedFilter = AppUtils.tryParseJson<TmdbProviderSearchFilter>(query)
-        val query = parsedFilter?.title ?: throw ErrorLoadingException()
+        val searchTitle = parsedFilter?.title ?: throw ErrorLoadingException()
 
         val yearFilter = if(parsedFilter.tmdbYear != null) {
-            ""// "/year-${parsedFilter.tmdbYear}"
+            "/year-${parsedFilter.tmdbYear}"
         } else {
             ""
         }
         val search = ArrayList<SearchResponse>()
         val urls = listOf(
-            "$mainUrl/movies/trending${yearFilter}?search=$query", // TODO add genre filter
-            "$mainUrl/tv-shows/trending${yearFilter}?search=$query"
+            "$mainUrl/movies/trending${yearFilter}?search=$searchTitle", // TODO add genre filter
+            "$mainUrl/tv-shows/trending${yearFilter}?search=$searchTitle"
         )
         urls.apmap { url ->
             val doc = app.get(url).document
