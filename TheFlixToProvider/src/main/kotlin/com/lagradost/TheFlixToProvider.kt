@@ -233,7 +233,7 @@ class TheFlixToProvider : MainAPI() {
         val query = parsedFilter?.title ?: throw ErrorLoadingException()
 
         val yearFilter = if(parsedFilter.tmdbYear != null) {
-            "/year-${parsedFilter.tmdbYear}"
+            ""// "/year-${parsedFilter.tmdbYear}"
         } else {
             ""
         }
