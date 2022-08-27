@@ -271,8 +271,9 @@ class SuperStream : MainAPI() {
     )
 
     override suspend fun search(query: String): List<SearchResponse> {
+        println("query: $query")
         val parsedFilter = tryParseJson<TmdbProviderSearchFilter>(query)
-        val query = parsedFilter?.title ?: throw ErrorLoadingException()
+        val searchedTitle = parsedFilter?.title ?: throw ErrorLoadingException()
 
         val searchType = when (parsedFilter.type) {
             TvType.TvSeries -> TYPE_SERIES
@@ -283,7 +284,7 @@ class SuperStream : MainAPI() {
         }.toString()
         val apiQuery =
             // Originally 8 pagelimit
-            """{"childmode":"$hideNsfw","app_version":"11.5","appid":"$appId","module":"Search3","channel":"Website","page":"1","lang":"en","type":$searchType,"keyword":"$query","pagelimit":"20","expired_date":"${getExpiryDate()}","platform":"android"}"""
+            """{"childmode":"$hideNsfw","app_version":"11.5","appid":"$appId","module":"Search3","channel":"Website","page":"1","lang":"en","type":$searchType,"keyword":"$searchedTitle","pagelimit":"20","expired_date":"${getExpiryDate()}","platform":"android"}"""
         val output = queryApi(apiQuery).text
 
         val searchResponse = parseJson<MainData>(output).data.first {

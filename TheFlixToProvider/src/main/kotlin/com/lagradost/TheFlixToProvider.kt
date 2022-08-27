@@ -5,6 +5,7 @@ import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.LoadResponse.Companion.addActors
 import com.lagradost.cloudstream3.utils.AppUtils
 import com.lagradost.cloudstream3.utils.AppUtils.parseJson
+import com.lagradost.cloudstream3.utils.AppUtils.tryParseJson
 import com.lagradost.cloudstream3.utils.ExtractorLink
 import com.lagradost.cloudstream3.utils.getQualityFromName
 
@@ -228,8 +229,8 @@ class TheFlixToProvider : MainAPI() {
     )
 
     override suspend fun search(query: String): List<SearchResponse> {
-
-        val parsedFilter = AppUtils.tryParseJson<TmdbProviderSearchFilter>(query)
+        println("query: $query")
+        val parsedFilter = tryParseJson<TmdbProviderSearchFilter>(query)
         val searchTitle = parsedFilter?.title ?: throw ErrorLoadingException()
 
         val yearFilter = if(parsedFilter.tmdbYear != null) {
@@ -267,7 +268,8 @@ class TheFlixToProvider : MainAPI() {
                                     this.name,
                                     TvType.Movie,
                                     poster,
-                                    null
+                                    null,
+
                                 )
                             )
                         } else {
