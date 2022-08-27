@@ -27,7 +27,7 @@ const val TYPE_MOVIES = 1
 
 class SuperStream : MainAPI() {
     override var name = "SuperStream"
-    override val hasMainPage = true
+    override val hasMainPage = false
     override val hasChromecastSupport = true
     override val supportedTypes = setOf(
         TvType.Movie,

@@ -20,6 +20,7 @@ class NginxProvider : MainAPI() {
     override val hasMainPage = true
     override val hasQuickSearch = false
     override val supportedTypes = setOf(TvType.AnimeMovie, TvType.TvSeries, TvType.Movie)
+    // override val hasSearch = false
 
     companion object {
         var companionName = "Nginx"
