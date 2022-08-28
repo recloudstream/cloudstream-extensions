@@ -52,7 +52,7 @@
              NginxProvider.loginCredentials = null
              return
          }
-         NginxProvider.overrideUrl = data.server?.removeSuffix("/")
+         NginxProvider.overrideUrl = data.server?.removeSuffix("/") + "/"
          NginxProvider.loginCredentials = "${data.username ?: ""}:${data.password ?: ""}"
      }
 
