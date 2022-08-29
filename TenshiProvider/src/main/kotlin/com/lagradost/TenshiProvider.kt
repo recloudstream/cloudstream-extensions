@@ -283,8 +283,9 @@ class TenshiProvider : MainAPI() {
                     ?.trim()
 
             val pattern = Regex("(\\d{4})")
-            val yearText = document.selectFirst("li.release-date .value")!!.text()
-            year = pattern.find(yearText)?.groupValues?.get(1)?.toIntOrNull()
+            document.selectFirst("li.release-date .value")?.text()?.let {
+                year = pattern.find(it)?.groupValues?.get(1)?.toIntOrNull()
+            }
 
             addEpisodes(DubStatus.Subbed, episodes)
 
