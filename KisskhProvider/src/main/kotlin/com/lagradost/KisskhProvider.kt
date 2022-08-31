@@ -28,6 +28,8 @@ class KisskhProvider : MainAPI() {
         "&type=1&sub=0&country=2&status=0&order=2" to "TVSeries Last Update",
         "&type=3&sub=0&country=0&status=0&order=1" to "Anime Popular",
         "&type=3&sub=0&country=0&status=0&order=2" to "Anime Last Update",
+        "&type=4&sub=0&country=0&status=0&order=1" to "Hollywood Popular",
+        "&type=4&sub=0&country=0&status=0&order=2" to "Hollywood Last Update",
     )
 
     override suspend fun getMainPage(
