@@ -17,24 +17,23 @@ class Tvtwofourseven : MainAPI() {
     )
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
-        val homePageList = ArrayList<HomePageList>()
-        listOf(
+        val home = listOf(
             Pair("$mainUrl/top-channels", "Top Channels"),
             Pair("$mainUrl/all-channels", "All Channels")
-        ).apmap {
+        ).apmap { (url,name) ->
             val home =
-                app.get(it.first).document.select("div.grid-items div.item").mapNotNull { item ->
+                app.get(url).document.select("div.grid-items div.item").mapNotNull { item ->
                     item.toSearchResult()
                 }
-            if (home.isNotEmpty()) homePageList.add(HomePageList(it.second, home, true))
-        }
-        return HomePageResponse(homePageList)
+            HomePageList(name, home)
+        }.filter { it.list.isNotEmpty() }
+        return HomePageResponse(home)
     }
 
     private fun Element.toSearchResult(): LiveSearchResponse? {
         return LiveSearchResponse(
             this.selectFirst("div.layer-content a")?.text() ?: return null,
-            fixUrl(this.selectFirst("a")!!.attr("href")),
+            fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null,
             this@Tvtwofourseven.name,
             TvType.Live,
             fixUrlNull(this.select("img").attr("src")),
@@ -42,7 +41,7 @@ class Tvtwofourseven : MainAPI() {
 
     }
 
-    override suspend fun search(query: String): List<SearchResponse>? {
+    override suspend fun search(query: String): List<SearchResponse> {
         return app.post(
             "$mainUrl/wp-admin/admin-ajax.php", data = mapOf(
                 "action" to "ajaxsearchlite_search",
@@ -53,7 +52,7 @@ class Tvtwofourseven : MainAPI() {
             headers = mapOf("X-Requested-With" to "XMLHttpRequest")
         ).document.select("div.item").mapNotNull {
             LiveSearchResponse(
-                it.selectFirst("a")?.text() ?: return null,
+                it.selectFirst("a")?.text() ?: return@mapNotNull null,
                 fixUrl(it.selectFirst("a")!!.attr("href")),
                 this@Tvtwofourseven.name,
                 TvType.Live,
