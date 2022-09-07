@@ -1,7 +1,7 @@
 package com.lagradost
 
 import com.lagradost.cloudstream3.*
-import com.lagradost.cloudstream3.LoadResponse.Companion.addDuration
+import com.lagradost.cloudstream3.LoadResponse.Companion.addActors
 import com.lagradost.cloudstream3.mvvm.logError
 import com.lagradost.cloudstream3.utils.ExtractorLink
 import com.lagradost.cloudstream3.utils.loadExtractor
@@ -113,10 +113,22 @@ class AllMoviesForYouProvider : MainAPI() {
         val rating =
             document.selectFirst("div.Vote > div.post-ratings > span")?.text()?.toRatingInt()
         val year = document.selectFirst("span.Date")?.text()
-        val duration = document.selectFirst("span.Time")!!.text()
         val backgroundPoster =
-            fixUrlNull(document.selectFirst("div.Image > figure > img")?.attr("data-src"))
-
+            fixUrlNull(document.selectFirst("div.Image > figure > img")?.attr("src"))
+        var tags: List<String>? = null
+        var cast: List<String>? = null
+        document.select("div.Description > p").forEach { element ->
+            val newtype = element.select("span")!!.text() ?: return@forEach
+            when {
+                newtype.contains("Genre") -> {
+                    tags = element.select("a").mapNotNull { it.text() }
+                }
+                newtype.contains("Cast") -> {
+                    cast = element.select("a").mapNotNull { it.text() }
+                }
+            }
+        }
+        
         if (type == TvType.TvSeries) {
             val list = ArrayList<Pair<Int, String>>()
 
@@ -156,18 +168,19 @@ class AllMoviesForYouProvider : MainAPI() {
                     }
                 }
             }
-            return TvSeriesLoadResponse(
+            return newTvSeriesLoadResponse(
                 title,
                 url,
-                this.name,
-                type,
-                episodeList,
-                backgroundPoster,
-                year?.toIntOrNull(),
-                descipt,
-                null,
-                rating
-            )
+                TvType.TvSeries,
+                episodeList
+            ) {
+                posterUrl = backgroundPoster
+                this.year = year?.toIntOrNull()
+                this.plot = descipt
+                this.tags = tags
+                this.rating = rating
+                addActors(cast)
+            }
         } else {
             return newMovieLoadResponse(
                 title,
@@ -178,8 +191,9 @@ class AllMoviesForYouProvider : MainAPI() {
                 posterUrl = backgroundPoster
                 this.year = year?.toIntOrNull()
                 this.plot = descipt
+                this.tags = tags
                 this.rating = rating
-                addDuration(duration)
+                addActors(cast)
             }
         }
     }
