@@ -41,7 +41,14 @@ class KisskhProvider : MainAPI() {
             ?.mapNotNull { media ->
                 media.toSearchResponse()
             } ?: throw ErrorLoadingException("Invalid Json reponse")
-        return newHomePageResponse(request.name, home)
+        return newHomePageResponse(
+            list = HomePageList(
+                name = request.name,
+                list = home,
+                isHorizontalImages = true
+            ),
+            hasNext = true
+        )
     }
 
     private fun Media.toSearchResponse(): SearchResponse? {

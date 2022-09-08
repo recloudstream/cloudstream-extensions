@@ -25,7 +25,7 @@ class Tvtwofourseven : MainAPI() {
                 app.get(url).document.select("div.grid-items div.item").mapNotNull { item ->
                     item.toSearchResult()
                 }
-            HomePageList(name, home)
+            HomePageList(name, home, true)
         }.filter { it.list.isNotEmpty() }
         return HomePageResponse(home)
     }
