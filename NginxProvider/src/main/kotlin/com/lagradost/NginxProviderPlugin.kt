@@ -15,6 +15,7 @@ class NginxProviderPlugin : Plugin() {
 
     override fun load(context: Context) {
         // All providers should be added in this manner. Please don't edit the providers list directly.
+        nginxApi.init()
         registerMainAPI(NginxProvider())
         ioSafe {
             nginxApi.initialize()
