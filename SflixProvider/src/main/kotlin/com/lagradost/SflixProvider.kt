@@ -458,11 +458,8 @@ open class SflixProvider : MainAPI() {
         }
 
         suspend fun getKey(): String? {
-            data class KeyObject(
-                @JsonProperty("key") val key: String? = null
-            )
-            return app.get("https://raw.githubusercontent.com/BlipBlob/blabflow/main/keys.json")
-                .parsed<KeyObject>().key
+            return app.get("https://raw.githubusercontent.com/consumet/rapidclown/rabbitstream/key.txt")
+                .text
         }
 
         /**
