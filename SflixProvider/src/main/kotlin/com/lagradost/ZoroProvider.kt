@@ -316,7 +316,7 @@ class ZoroProvider : MainAPI() {
     }
 
     private suspend fun getKey(): String {
-        return app.get("https://raw.githubusercontent.com/consumet/rapidclown/main/key.txt").text
+        return app.get("https://raw.githubusercontent.com/enimax-anime/key/e6/key.txt").text
     }
 
     override suspend fun loadLinks(
